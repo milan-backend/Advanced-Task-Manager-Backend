@@ -5,9 +5,13 @@ import os
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
-if not SECRET_KEY:
-    raise RuntimeError("SECRET_KEY is not set")
-ACCESS_TOKEN_EXPIRE_MINUTES = 15
+
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES","15"))
+
+def get_secret_key():
+    if not SECRET_KEY:
+        raise RuntimeError("SECRET_KEY is not set")
+    return SECRET_KEY
 
 
 def create_access_token(
@@ -31,7 +35,7 @@ def create_access_token(
 
     return jwt.encode(
         payload,
-        SECRET_KEY,
+        get_secret_key(),
         algorithm=ALGORITHM,
     )
 
@@ -42,7 +46,7 @@ def decode_access_token(token:str) -> str:
     try:
         payload = jwt.decode(
             token,
-            SECRET_KEY,
+            get_secret_key(),
             algorithms=[ALGORITHM],
         )
 
