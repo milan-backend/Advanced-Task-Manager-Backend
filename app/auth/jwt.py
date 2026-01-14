@@ -9,9 +9,10 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES","15"))
 
 def get_secret_key():
-    if not SECRET_KEY:
+    secret = os.getenv("SECRET_KEY")
+    if not secret:
         raise RuntimeError("SECRET_KEY is not set")
-    return SECRET_KEY
+    return secret
 
 
 def create_access_token(
