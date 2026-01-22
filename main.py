@@ -9,6 +9,19 @@ from app.api.auth import router as auth_router
 
 app = FastAPI()
 
+
+@app.get("/")
+def root():
+    return{
+        "message": "Advanced Task Manager API is running",
+        "docs" : "/docs",
+        "health": "/health"
+    }
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 app.include_router(user_router)
 app.include_router(project_router)
 app.include_router(project_member_router)
